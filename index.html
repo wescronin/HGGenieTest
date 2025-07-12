@@ -10,10 +10,6 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-  <script src="https://js.stripe.com/v3/"></script>
   <style>
     :root {
       --primary: #4895ef;
@@ -639,27 +635,62 @@
       font-size: 0.8rem;
     }
 
-    /* Account Styles */
-    #auth-container {
-      transition: var(--transition);
+    /* Paywall Styles */
+    .paywall-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      display: none;
     }
 
-    #account-info p {
-      margin-bottom: 15px;
-      font-size: 1.1rem;
+    .paywall-card {
+      background-color: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      text-align: center;
     }
 
-    #user-email {
-      font-weight: 600;
+    .paywall-card h2 {
       color: var(--primary);
+      margin-bottom: 20px;
     }
 
-    #premium-features ul {
-      margin: 15px 0 0 20px;
+    .paywall-card p {
+      margin-bottom: 20px;
     }
 
-    #premium-features li {
-      margin-bottom: 8px;
+    .paywall-features {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .paywall-features li {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .paywall-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--gray);
+      font-size: 1.5rem;
+      cursor: pointer;
     }
 
     @media (max-width: 480px) {
@@ -769,7 +800,7 @@
       <div class="tab" data-tab="penalty">Penalty</div>
       <div class="tab" data-tab="calculator">Calculator</div>
       <div class="tab" data-tab="timer">Dry Fire Timer</div>
-      <div class="tab" data-tab="account">Account</div>
+      <div class="tab" data-tab="premium">Go Premium</div>
       <div class="tab" data-tab="support">Support</div>
     </div>
 
@@ -1175,65 +1206,42 @@
       </div>
     </div>
 
-    <!-- Account Tab -->
-    <div class="tab-content" id="account-tab">
+    <!-- Premium Tab -->
+    <div class="tab-content" id="premium-tab">
       <div class="card">
-        <h2><i class="fas fa-user"></i> Account</h2>
+        <h2><i class="fas fa-crown"></i> Go Premium</h2>
+        <p>Upgrade to unlock all premium features and support the development of Hit Factor Genie!</p>
         
-        <div id="auth-container">
-          <div id="login-form" style="display: none;">
-            <div class="input-group">
-              <label for="login-email">Email</label>
-              <input type="email" id="login-email" placeholder="your@email.com">
+        <div class="info-box">
+          <h3><i class="fas fa-star"></i> Premium Features</h3>
+          <ul>
+            <li>Unlimited saved calculations</li>
+            <li>Sync across all your devices</li>
+            <li>Advanced analytics and insights</li>
+            <li>Priority support</li>
+            <li>Early access to new features</li>
+          </ul>
+        </div>
+        
+        <div class="info-box">
+          <h3><i class="fas fa-gem"></i> Premium Plans</h3>
+          <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+            <div style="padding: 15px; background-color: rgba(67, 97, 238, 0.1); border-radius: 8px;">
+              <h4 style="margin-bottom: 10px;">Monthly Subscription</h4>
+              <p style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">$4.99/month</p>
+              <button id="subscribe-monthly" style="margin-top: 10px;"><i class="fas fa-credit-card"></i> Subscribe</button>
             </div>
-            <div class="input-group">
-              <label for="login-password">Password</label>
-              <input type="password" id="login-password" placeholder="••••••••">
-            </div>
-            <button id="login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
-            <p style="text-align: center; margin-top: 10px;">
-              Don't have an account? <a href="#" id="show-signup">Sign up</a>
-            </p>
-          </div>
-          
-          <div id="signup-form" style="display: none;">
-            <div class="input-group">
-              <label for="signup-email">Email</label>
-              <input type="email" id="signup-email" placeholder="your@email.com">
-            </div>
-            <div class="input-group">
-              <label for="signup-password">Password</label>
-              <input type="password" id="signup-password" placeholder="••••••••">
-            </div>
-            <div class="input-group">
-              <label for="signup-confirm">Confirm Password</label>
-              <input type="password" id="signup-confirm" placeholder="••••••••">
-            </div>
-            <button id="signup-btn"><i class="fas fa-user-plus"></i> Sign Up</button>
-            <p style="text-align: center; margin-top: 10px;">
-              Already have an account? <a href="#" id="show-login">Login</a>
-            </p>
-          </div>
-          
-          <div id="account-info" style="display: none;">
-            <p>Welcome, <span id="user-email"></span>!</p>
-            <div class="result-actions">
-              <button id="logout-btn" class="copy-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
-              <button id="premium-btn" class="share-btn"><i class="fas fa-crown"></i> Go Premium</button>
+            <div style="padding: 15px; background-color: rgba(67, 97, 238, 0.1); border-radius: 8px;">
+              <h4 style="margin-bottom: 10px;">Annual Subscription</h4>
+              <p style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">$49.99/year <small>(Save 16%)</small></p>
+              <button id="subscribe-annual" style="margin-top: 10px;"><i class="fas fa-credit-card"></i> Subscribe</button>
             </div>
           </div>
         </div>
-      </div>
-      
-      <div class="card" id="premium-features" style="display: none;">
-        <h2><i class="fas fa-crown"></i> Premium Features</h2>
-        <ul>
-          <li>Save unlimited calculations</li>
-          <li>Sync across devices</li>
-          <li>Advanced analytics</li>
-          <li>Priority support</li>
-        </ul>
-        <button id="subscribe-btn" style="margin-top: 15px;"><i class="fas fa-credit-card"></i> Subscribe ($5/month)</button>
+        
+        <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--gray);">
+          <i class="fas fa-lock"></i> Secure payment processing powered by Stripe
+        </p>
       </div>
     </div>
 
@@ -1278,6 +1286,24 @@
       </div>
     </div>
 
+    <!-- Paywall Overlay -->
+    <div class="paywall-overlay" id="paywallOverlay">
+      <div class="paywall-card">
+        <button class="paywall-close" id="paywallClose">&times;</button>
+        <h2><i class="fas fa-crown"></i> Premium Feature</h2>
+        <p>This feature is only available to premium subscribers. Upgrade now to unlock:</p>
+        
+        <ul class="paywall-features">
+          <li><i class="fas fa-check-circle" style="color: var(--success);"></i> Unlimited saved calculations</li>
+          <li><i class="fas fa-check-circle" style="color: var(--success);"></i> Sync across all your devices</li>
+          <li><i class="fas fa-check-circle" style="color: var(--success);"></i> Advanced analytics and insights</li>
+          <li><i class="fas fa-check-circle" style="color: var(--success);"></i> Priority support</li>
+        </ul>
+        
+        <button id="upgradeNowBtn" style="width: 100%;"><i class="fas fa-arrow-up"></i> Upgrade Now</button>
+      </div>
+    </div>
+
     <div class="footer">
       <p>HF Genie follows Eric Grauffel's Method</p>
       <p>Made with <i class="fas fa-heart" style="color: var(--secondary);"></i> by Wes Cronin</p>
@@ -1289,152 +1315,6 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    // Initialize Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyBoiQ52wLY2z2HXxuAST1KNE8hNiCVZouQ",
-      authDomain: "hit-factor-genie.firebaseapp.com",
-      projectId: "hit-factor-genie",
-      storageBucket: "hit-factor-genie.appspot.com",
-      messagingSenderId: "233870567161",
-      appId: "1:233870567161:web:56e4bd1668f36a13646428",
-      measurementId: "G-J6C3Y2MT83"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    let stripe;
-
-    // Initialize Stripe (replace with your publishable key)
-    function initStripe() {
-      stripe = Stripe('pk_test_your_publishable_key_here');
-    }
-
-    // Auth state listener
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        // User is signed in
-        showAccountInfo(user);
-        document.getElementById('premium-features').style.display = 'block';
-      } else {
-        // User is signed out
-        showLoginForm();
-        document.getElementById('premium-features').style.display = 'none';
-      }
-    });
-
-    // Show login form
-    function showLoginForm() {
-      document.getElementById('login-form').style.display = 'block';
-      document.getElementById('signup-form').style.display = 'none';
-      document.getElementById('account-info').style.display = 'none';
-    }
-
-    // Show signup form
-    function showSignupForm() {
-      document.getElementById('login-form').style.display = 'none';
-      document.getElementById('signup-form').style.display = 'block';
-      document.getElementById('account-info').style.display = 'none';
-    }
-
-    // Show account info
-    function showAccountInfo(user) {
-      document.getElementById('login-form').style.display = 'none';
-      document.getElementById('signup-form').style.display = 'none';
-      document.getElementById('account-info').style.display = 'block';
-      document.getElementById('user-email').textContent = user.email;
-    }
-
-    // Event listeners for auth forms
-    document.getElementById('show-signup').addEventListener('click', (e) => {
-      e.preventDefault();
-      showSignupForm();
-    });
-
-    document.getElementById('show-login').addEventListener('click', (e) => {
-      e.preventDefault();
-      showLoginForm();
-    });
-
-    document.getElementById('login-btn').addEventListener('click', () => {
-      const email = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
-      
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          showToast('Logged in successfully!', 'check');
-        })
-        .catch(error => {
-          showToast(error.message, 'exclamation-triangle');
-        });
-    });
-
-    document.getElementById('signup-btn').addEventListener('click', () => {
-      const email = document.getElementById('signup-email').value;
-      const password = document.getElementById('signup-password').value;
-      const confirm = document.getElementById('signup-confirm').value;
-      
-      if (password !== confirm) {
-        showToast('Passwords do not match', 'exclamation-triangle');
-        return;
-      }
-      
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          showToast('Account created successfully!', 'check');
-        })
-        .catch(error => {
-          showToast(error.message, 'exclamation-triangle');
-        });
-    });
-
-    document.getElementById('logout-btn').addEventListener('click', () => {
-      auth.signOut()
-        .then(() => {
-          showToast('Logged out successfully', 'check');
-        });
-    });
-
-    // Premium subscription
-    document.getElementById('subscribe-btn').addEventListener('click', async () => {
-      try {
-        // Create a checkout session
-        const response = await fetch('https://your-backend-url/create-checkout-session', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${await auth.currentUser.getIdToken()}`
-          },
-          body: JSON.stringify({
-            priceId: 'your_stripe_price_id',
-            successUrl: window.location.href,
-            cancelUrl: window.location.href
-          })
-        });
-        
-        const session = await response.json();
-        
-        // Redirect to Stripe Checkout
-        const result = await stripe.redirectToCheckout({
-          sessionId: session.id
-        });
-        
-        if (result.error) {
-          showToast(result.error.message, 'exclamation-triangle');
-        }
-      } catch (error) {
-        showToast(error.message, 'exclamation-triangle');
-      }
-    });
-
-    // Initialize Stripe when account tab is clicked
-    document.querySelector('.tab[data-tab="account"]').addEventListener('click', () => {
-      if (!stripe) {
-        initStripe();
-      }
-    });
-
     // Dark Mode Toggle (starts in dark mode, toggles to light)
     const darkModeToggle = document.getElementById('toggleDarkMode');
     darkModeToggle.addEventListener('change', function() {
@@ -1645,8 +1525,14 @@ ${document.getElementById('hfEvaluation').textContent}`;
     }
 
     // Save calculations
-    async function saveCalculation(tab) {
-      const user = auth.currentUser;
+    function saveCalculation(tab) {
+      // Check if user has reached free limit
+      const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
+      if (savedCalculations.length >= 3) {
+        showPaywall();
+        return;
+      }
+      
       const timestamp = new Date().toLocaleString();
       let calculationData = {
         id: Date.now(),
@@ -1703,29 +1589,14 @@ ${document.getElementById('hfEvaluation').textContent}`;
           break;
       }
       
-      if (user) {
-        // Save to Firestore
-        try {
-          await db.collection('users').doc(user.uid).collection('calculations').add(calculationData);
-          showToast('Calculation saved to cloud!', 'save');
-        } catch (error) {
-          showToast('Failed to save to cloud', 'exclamation-triangle');
-          console.error(error);
-        }
-      } else {
-        // Save to localStorage
-        const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
-        savedCalculations.push(calculationData);
-        localStorage.setItem(`saved_${tab}`, JSON.stringify(savedCalculations));
-        showToast('Calculation saved locally!', 'save');
-      }
-      
+      savedCalculations.push(calculationData);
+      localStorage.setItem(`saved_${tab}`, JSON.stringify(savedCalculations));
+      showToast('Calculation saved!', 'save');
       loadSavedCalculations(tab);
     }
 
-    // Load saved calculations
-    async function loadSavedCalculations(tab) {
-      const user = auth.currentUser;
+    function loadSavedCalculations(tab) {
+      const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
       const container = document.getElementById(`${tab}List`);
       const parent = document.getElementById(`saved${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
       
@@ -1733,82 +1604,46 @@ ${document.getElementById('hfEvaluation').textContent}`;
       
       container.innerHTML = '';
       
-      if (user) {
-        // Load from Firestore
-        try {
-          const snapshot = await db.collection('users').doc(user.uid)
-            .collection('calculations')
-            .where('tab', '==', tab)
-            .orderBy('timestamp', 'desc')
-            .limit(20)
-            .get();
-          
-          if (snapshot.empty) {
-            container.innerHTML = '<p style="text-align: center; color: var(--gray);">No saved calculations yet</p>';
-            parent.style.display = 'none';
-            return;
-          }
-          
-          parent.style.display = 'block';
-          
-          snapshot.forEach(doc => {
-            const calc = { id: doc.id, ...doc.data() };
-            createCalculationItem(calc, container);
-          });
-        } catch (error) {
-          showToast('Failed to load cloud data', 'exclamation-triangle');
-          console.error(error);
-        }
-      } else {
-        // Load from localStorage
-        const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
-        
-        if (savedCalculations.length === 0) {
-          container.innerHTML = '<p style="text-align: center; color: var(--gray);">No saved calculations yet</p>';
-          parent.style.display = 'none';
-          return;
-        }
-        
-        parent.style.display = 'block';
-        
-        savedCalculations.reverse().forEach(calc => {
-          createCalculationItem(calc, container);
-        });
+      if (savedCalculations.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--gray);">No saved calculations yet</p>';
+        parent.style.display = 'none';
+        return;
       }
+      
+      parent.style.display = 'block';
+      
+      savedCalculations.reverse().forEach(calc => {
+        const item = document.createElement('div');
+        item.className = 'calculation-item';
+        
+        const summary = document.createElement('div');
+        summary.innerHTML = `<strong>${calc.timestamp}</strong>`;
+        
+        const actions = document.createElement('div');
+        actions.className = 'calculation-actions';
+        
+        const loadBtn = document.createElement('button');
+        loadBtn.innerHTML = '<i class="fas fa-undo"></i>';
+        loadBtn.className = 'copy-btn';
+        loadBtn.style.padding = '5px 8px';
+        loadBtn.onclick = () => loadCalculation(calc);
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+        deleteBtn.className = 'save-btn';
+        deleteBtn.style.padding = '5px 8px';
+        deleteBtn.style.marginLeft = '5px';
+        deleteBtn.onclick = () => deleteCalculation(calc.id, tab);
+        
+        actions.appendChild(loadBtn);
+        actions.appendChild(deleteBtn);
+        item.appendChild(summary);
+        item.appendChild(actions);
+        container.appendChild(item);
+      });
       
       // Hide the list by default
       container.style.display = 'none';
-    }
-
-    // Helper function to create calculation items
-    function createCalculationItem(calc, container) {
-      const item = document.createElement('div');
-      item.className = 'calculation-item';
-      
-      const summary = document.createElement('div');
-      summary.innerHTML = `<strong>${calc.timestamp}</strong>`;
-      
-      const actions = document.createElement('div');
-      actions.className = 'calculation-actions';
-      
-      const loadBtn = document.createElement('button');
-      loadBtn.innerHTML = '<i class="fas fa-undo"></i>';
-      loadBtn.className = 'copy-btn';
-      loadBtn.style.padding = '5px 8px';
-      loadBtn.onclick = () => loadCalculation(calc);
-      
-      const deleteBtn = document.createElement('button');
-      deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-      deleteBtn.className = 'save-btn';
-      deleteBtn.style.padding = '5px 8px';
-      deleteBtn.style.marginLeft = '5px';
-      deleteBtn.onclick = () => deleteCalculation(calc.id, calc.tab);
-      
-      actions.appendChild(loadBtn);
-      actions.appendChild(deleteBtn);
-      item.appendChild(summary);
-      item.appendChild(actions);
-      container.appendChild(item);
     }
 
     function loadCalculation(calc) {
@@ -1851,27 +1686,12 @@ ${document.getElementById('hfEvaluation').textContent}`;
       showToast('Calculation loaded', 'check');
     }
 
-    async function deleteCalculation(id, tab) {
-      const user = auth.currentUser;
-      
-      if (user) {
-        // Delete from Firestore
-        try {
-          await db.collection('users').doc(user.uid).collection('calculations').doc(id).delete();
-          showToast('Calculation deleted', 'trash');
-          loadSavedCalculations(tab);
-        } catch (error) {
-          showToast('Failed to delete calculation', 'exclamation-triangle');
-          console.error(error);
-        }
-      } else {
-        // Delete from localStorage
-        const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
-        const updated = savedCalculations.filter(calc => calc.id !== id);
-        localStorage.setItem(`saved_${tab}`, JSON.stringify(updated));
-        loadSavedCalculations(tab);
-        showToast('Calculation deleted', 'trash');
-      }
+    function deleteCalculation(id, tab) {
+      const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
+      const updated = savedCalculations.filter(calc => calc.id !== id);
+      localStorage.setItem(`saved_${tab}`, JSON.stringify(updated));
+      loadSavedCalculations(tab);
+      showToast('Calculation deleted', 'trash');
     }
 
     // Strategy Calculator
@@ -2029,6 +1849,21 @@ ${document.getElementById('hfEvaluation').textContent}`;
       if (hf >= 3) return "Average hit factor";
       return "Low hit factor - focus on speed or accuracy";
     }
+
+    // Paywall functions
+    function showPaywall() {
+      document.getElementById('paywallOverlay').style.display = 'flex';
+    }
+
+    function hidePaywall() {
+      document.getElementById('paywallOverlay').style.display = 'none';
+    }
+
+    document.getElementById('paywallClose').addEventListener('click', hidePaywall);
+    document.getElementById('upgradeNowBtn').addEventListener('click', function() {
+      hidePaywall();
+      document.querySelector('.tab[data-tab="premium"]').click();
+    });
 
     // Initialize first tab and load any URL parameters
     document.addEventListener('DOMContentLoaded', () => {
