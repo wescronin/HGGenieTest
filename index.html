@@ -68,6 +68,7 @@
       text-align: center;
       margin-bottom: 24px;
       animation: fadeInDown 0.6s ease-out;
+      position: relative;
     }
 
     @keyframes fadeInDown {
@@ -635,64 +636,6 @@
       font-size: 0.8rem;
     }
 
-    /* Paywall Styles */
-    .paywall-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0,0,0,0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      display: none;
-    }
-
-    .paywall-card {
-      background-color: var(--card);
-      border-radius: 12px;
-      padding: 24px;
-      max-width: 500px;
-      width: 90%;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .paywall-card h2 {
-      color: var(--primary);
-      margin-bottom: 20px;
-    }
-
-    .paywall-card p {
-      margin-bottom: 20px;
-    }
-
-    .paywall-features {
-      text-align: left;
-      margin-bottom: 20px;
-    }
-
-    .paywall-features li {
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .paywall-close {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: none;
-      border: none;
-      color: var(--gray);
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
     @media (max-width: 480px) {
       .container {
         padding: 0;
@@ -767,11 +710,221 @@
       visibility: visible;
       opacity: 1;
     }
+
+    /* Auth Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+    
+    .modal-content {
+      background-color: var(--card);
+      margin: 10% auto;
+      padding: 24px;
+      border: 1px solid var(--border);
+      width: 90%;
+      max-width: 400px;
+      border-radius: 12px;
+      position: relative;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.5rem;
+      color: var(--gray);
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .auth-tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      border-bottom: 3px solid transparent;
+      transition: var(--transition);
+    }
+    
+    .auth-tab.active {
+      border-bottom-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    .auth-form {
+      display: none;
+    }
+    
+    .auth-form.active {
+      display: block;
+    }
+    
+    /* User Profile Button */
+    .user-profile {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--primary);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+    
+    .user-profile:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    
+    .user-dropdown {
+      position: absolute;
+      bottom: 60px;
+      right: 0;
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 200px;
+      box-shadow: var(--shadow);
+      display: none;
+      overflow: hidden;
+    }
+    
+    .user-dropdown.show {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    .user-dropdown-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .user-dropdown-item:hover {
+      background-color: rgba(67, 97, 238, 0.1);
+    }
+    
+    .user-dropdown-item i {
+      margin-right: 8px;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .premium-badge {
+      background-color: gold;
+      color: #333;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+    
+    /* Paywall Styles */
+    .paywall-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      display: none;
+    }
+
+    .paywall-card {
+      background-color: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .paywall-card h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .paywall-card p {
+      margin-bottom: 20px;
+    }
+
+    .paywall-features {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .paywall-features li {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .paywall-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--gray);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Login button in header */
+    .header-login-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      border-radius: 20px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .header-login-btn:hover {
+      background-color: var(--primary-dark);
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
+      <button id="headerLoginBtn" class="header-login-btn" style="display: none;">
+        <i class="fas fa-user"></i> Login
+      </button>
       <h1><i class="fas fa-bolt"></i> Hit Factor Genie</h1>
       <p class="subtitle">Optimize Your Shooting Performance</p>
     </header>
@@ -1304,6 +1457,78 @@
       </div>
     </div>
 
+    <!-- Login/Register Modal -->
+    <div id="authModal" class="modal">
+      <div class="modal-content">
+        <button class="close-modal">&times;</button>
+        <h2><i class="fas fa-user"></i> Account</h2>
+        
+        <div class="auth-tabs">
+          <div class="auth-tab active" data-tab="login">Login</div>
+          <div class="auth-tab" data-tab="register">Register</div>
+        </div>
+        
+        <form id="loginForm" class="auth-form active">
+          <div class="input-group">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required>
+          </div>
+          
+          <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
+          <p style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
+            <a href="#" id="forgotPassword">Forgot password?</a>
+          </p>
+        </form>
+        
+        <form id="registerForm" class="auth-form">
+          <div class="input-group">
+            <label for="registerName">Name</label>
+            <input type="text" id="registerName" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="registerEmail">Email</label>
+            <input type="email" id="registerEmail" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="registerPassword">Password</label>
+            <input type="password" id="registerPassword" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="registerConfirm">Confirm Password</label>
+            <input type="password" id="registerConfirm" required>
+          </div>
+          
+          <button type="submit"><i class="fas fa-user-plus"></i> Register</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- User Profile Button (visible when logged in) -->
+    <div id="userProfile" class="user-profile" style="display: none;">
+      <i class="fas fa-user"></i>
+      <span id="userName">User</span>
+      <span id="premiumBadge" class="premium-badge" style="display: none;">PREMIUM</span>
+      <div id="userDropdown" class="user-dropdown">
+        <div class="user-dropdown-item" id="viewProfile">
+          <i class="fas fa-user-circle"></i> Profile
+        </div>
+        <div class="user-dropdown-item" id="manageSubscription">
+          <i class="fas fa-crown"></i> Subscription
+        </div>
+        <div class="user-dropdown-item" id="logoutBtn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </div>
+      </div>
+    </div>
+
     <div class="footer">
       <p>HF Genie follows Eric Grauffel's Method</p>
       <p>Made with <i class="fas fa-heart" style="color: var(--secondary);"></i> by Wes Cronin</p>
@@ -1528,7 +1753,7 @@ ${document.getElementById('hfEvaluation').textContent}`;
     function saveCalculation(tab) {
       // Check if user has reached free limit
       const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
-      if (savedCalculations.length >= 3) {
+      if (savedCalculations.length >= 3 && (!currentUser || !currentUser.isPremium)) {
         showPaywall();
         return;
       }
@@ -1850,6 +2075,204 @@ ${document.getElementById('hfEvaluation').textContent}`;
       return "Low hit factor - focus on speed or accuracy";
     }
 
+    // Mock database for demonstration
+    const mockDatabase = {
+      users: [],
+      subscriptions: []
+    };
+
+    // Current user state
+    let currentUser = null;
+
+    // Initialize auth system
+    function initAuthSystem() {
+      // Check for saved session
+      const savedUser = localStorage.getItem('currentUser');
+      if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        updateAuthUI();
+      } else {
+        showLoginButton();
+      }
+
+      // Setup event listeners
+      document.getElementById('headerLoginBtn').addEventListener('click', showAuthModal);
+      document.getElementById('userProfile').addEventListener('click', toggleUserDropdown);
+      document.getElementById('logoutBtn').addEventListener('click', logout);
+      document.getElementById('viewProfile').addEventListener('click', viewProfile);
+      document.getElementById('manageSubscription').addEventListener('click', manageSubscription);
+      
+      // Auth modal tabs
+      document.querySelectorAll('.auth-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+          
+          tab.classList.add('active');
+          const tabName = tab.dataset.tab;
+          document.getElementById(`${tabName}Form`).classList.add('active');
+        });
+      });
+
+      // Login form
+      document.getElementById('loginForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        loginUser(email, password);
+      });
+
+      // Register form
+      document.getElementById('registerForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('registerName').value;
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+        const confirm = document.getElementById('registerConfirm').value;
+        
+        if (password !== confirm) {
+          showToast("Passwords don't match", "exclamation-triangle");
+          return;
+        }
+        
+        registerUser(name, email, password);
+      });
+
+      // Paywall buttons
+      document.getElementById('paywallClose').addEventListener('click', hidePaywall);
+      document.getElementById('upgradeNowBtn').addEventListener('click', () => {
+        // In a real app, this would redirect to Stripe checkout
+        window.open('https://buy.stripe.com/test_00g3eZ7qQ4vB6OQ144', '_blank');
+        hidePaywall();
+      });
+
+      // Premium subscription buttons
+      document.getElementById('subscribe-monthly').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.open('https://buy.stripe.com/test_00g3eZ7qQ4vB6OQ144', '_blank');
+        showToast('Redirecting to Stripe checkout for monthly subscription', 'credit-card');
+      });
+
+      document.getElementById('subscribe-annual').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.open('https://buy.stripe.com/test_00g3eZ7qQ4vB6OQ144', '_blank');
+        showToast('Redirecting to Stripe checkout for annual subscription', 'credit-card');
+      });
+    }
+
+    // User authentication functions
+    function loginUser(email, password) {
+      // In a real app, this would be an API call to your backend
+      const user = mockDatabase.users.find(u => u.email === email && u.password === password);
+      
+      if (user) {
+        currentUser = user;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        updateAuthUI();
+        hideAuthModal();
+        showToast("Login successful!", "check");
+      } else {
+        showToast("Invalid email or password", "exclamation-triangle");
+      }
+    }
+
+    function registerUser(name, email, password) {
+      // In a real app, this would be an API call to your backend
+      const userExists = mockDatabase.users.some(u => u.email === email);
+      
+      if (userExists) {
+        showToast("Email already registered", "exclamation-triangle");
+        return;
+      }
+      
+      const newUser = {
+        id: Date.now(),
+        name,
+        email,
+        password, // In a real app, this would be hashed
+        isPremium: false,
+        joinDate: new Date().toISOString()
+      };
+      
+      mockDatabase.users.push(newUser);
+      currentUser = newUser;
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      updateAuthUI();
+      hideAuthModal();
+      showToast("Registration successful!", "check");
+    }
+
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('currentUser');
+      updateAuthUI();
+      hideUserDropdown();
+      showToast("Logged out successfully", "sign-out-alt");
+    }
+
+    // UI update functions
+    function updateAuthUI() {
+      if (currentUser) {
+        document.getElementById('headerLoginBtn').style.display = 'none';
+        document.getElementById('userProfile').style.display = 'flex';
+        document.getElementById('userName').textContent = currentUser.name;
+        
+        // Check premium status
+        const isPremium = mockDatabase.subscriptions.some(sub => 
+          sub.userId === currentUser.id && sub.status === 'active'
+        );
+        
+        if (isPremium) {
+          document.getElementById('premiumBadge').style.display = 'inline-block';
+          currentUser.isPremium = true;
+        } else {
+          document.getElementById('premiumBadge').style.display = 'none';
+          currentUser.isPremium = false;
+        }
+      } else {
+        document.getElementById('headerLoginBtn').style.display = 'flex';
+        document.getElementById('userProfile').style.display = 'none';
+      }
+    }
+
+    function showLoginButton() {
+      document.getElementById('headerLoginBtn').style.display = 'flex';
+    }
+
+    function showAuthModal() {
+      document.getElementById('authModal').style.display = 'block';
+    }
+
+    function hideAuthModal() {
+      document.getElementById('authModal').style.display = 'none';
+      // Reset forms
+      document.getElementById('loginForm').reset();
+      document.getElementById('registerForm').reset();
+    }
+
+    function toggleUserDropdown() {
+      document.getElementById('userDropdown').classList.toggle('show');
+    }
+
+    function hideUserDropdown() {
+      document.getElementById('userDropdown').classList.remove('show');
+    }
+
+    function viewProfile() {
+      hideUserDropdown();
+      showToast(`Profile view would show here for ${currentUser.name}`, "user-circle");
+    }
+
+    function manageSubscription() {
+      hideUserDropdown();
+      if (currentUser.isPremium) {
+        showToast("Manage your premium subscription", "crown");
+        // In a real app, this would open a subscription management portal
+      } else {
+        showPaywall();
+      }
+    }
+
     // Paywall functions
     function showPaywall() {
       document.getElementById('paywallOverlay').style.display = 'flex';
@@ -1859,14 +2282,43 @@ ${document.getElementById('hfEvaluation').textContent}`;
       document.getElementById('paywallOverlay').style.display = 'none';
     }
 
-    document.getElementById('paywallClose').addEventListener('click', hidePaywall);
-    document.getElementById('upgradeNowBtn').addEventListener('click', function() {
-      hidePaywall();
-      document.querySelector('.tab[data-tab="premium"]').click();
+    // Close modals when clicking outside
+    window.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('authModal')) {
+        hideAuthModal();
+      }
+      if (e.target === document.getElementById('paywallOverlay')) {
+        hidePaywall();
+      }
+      if (!e.target.closest('.user-profile') && !e.target.closest('.user-dropdown')) {
+        hideUserDropdown();
+      }
     });
 
-    // Initialize first tab and load any URL parameters
+    // Initialize everything when DOM is loaded
     document.addEventListener('DOMContentLoaded', () => {
+      initAuthSystem();
+      
+      // Add a test user for demonstration
+      mockDatabase.users.push({
+        id: 1,
+        name: "Test User",
+        email: "test@example.com",
+        password: "password123",
+        isPremium: false,
+        joinDate: new Date().toISOString()
+      });
+      
+      // Add a premium subscription for testing
+      mockDatabase.subscriptions.push({
+        id: 1,
+        userId: 1,
+        status: "active",
+        plan: "premium",
+        startDate: new Date().toISOString()
+      });
+
+      // Initialize first tab and load any URL parameters
       const params = new URLSearchParams(window.location.search);
       const tabParam = params.get('tab');
       
